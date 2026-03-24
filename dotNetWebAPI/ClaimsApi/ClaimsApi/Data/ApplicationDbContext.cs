@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 public class ApplicationDbContext : DbContext
 {
@@ -16,137 +19,41 @@ public class ApplicationDbContext : DbContext
             .HasIndex(x => x.ClaimNumber)
             .IsUnique();
 
-        modelBuilder.Entity<Claim>().HasData(
+        // Generate 5000 realistic-looking Claim seed records
+        var rnd = new Random(0); // deterministic seed for reproducible data
+        var statuses = new[] { "Submitted", "Under Review", "Approved", "Rejected" };
+        var baseDate = new DateTime(2025, 1, 1);
 
-          new Claim
-          {
-              Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-              ClaimNumber = "CLM1001",
-              MemberName = "Ravi Kumar",
-              ProviderName = "Apollo Hospital",
-              Amount = 15000,
-              ServiceDate = new DateTime(2025, 1, 10),
-              Status = "Submitted",
-              CreatedAt = new DateTime(2025, 1, 10),
-              UpdatedAt = new DateTime(2025, 1, 10)
-          },
+        var firstNames = new[] { "Ravi", "Priya", "Arun", "Meena", "Suresh", "Anita", "Rahul", "Kavita", "Deepak", "Lakshmi", "Amit", "Sneha", "Vikram", "Neha", "Karan", "Pooja", "Manish", "Rekha", "Sandeep", "Divya", "Rohit", "Anjali", "Vijay", "Shreya", "Kunal", "Isha", "Ramesh", "Sunita", "Prakash", "Geeta" };
+        var lastNames = new[] { "Kumar", "Sharma", "Singh", "Patel", "Reddy", "Verma", "Nair", "Joshi", "Gupta", "Narayan", "Chaudhary", "Mehta", "Kapoor", "Bose", "Khan", "Desai", "Malhotra", "Bhatia", "Rao", "Shetty", "Agarwal", "Iyer", "Menon", "Dubey", "Thomas", "Das", "Roy", "Prasad", "Saxena", "Nandan" };
+        var providers = new[] {
+            "Apollo Hospital", "Fortis Hospital", "AIIMS", "Max Healthcare", "Narayana Hospital", "Care Hospital", "Manipal Hospital", "Medanta Hospital", "Global Hospital", "Sunrise Hospital",
+            "Aster Clinic", "KIMS Hospital", "Columbia Asia", "Wockhardt Hospitals", "Sir Ganga Ram Hospital", "Ruby Hall Clinic", "Kokilaben Dhirubhai Ambani Hospital", "Lilavati Hospital", "Sparsh Hospital", "Hindustan Hospital",
+            "Yashoda Hospital", "Kauvery Hospital", "PD Hinduja Hospital", "BLK Super Speciality", "HCG Cancer Centre", "Bombay Hospital", "Cleveland Clinic India", "Carewell Hospital", "Narayana Multispeciality", "Sahyadri Hospital",
+            "Hiranandani Hospital", "KJ Somaiya Hospital", "KEM Hospital", "Christian Medical College", "Breach Candy Hospital", "Jaslok Hospital", "Deenanath Mangeshkar Hospital", "Artemis Hospital", "BLK-Max Hospital", "Columbia Hospital"
+        };
 
-          new Claim
-          {
-              Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-              ClaimNumber = "CLM1002",
-              MemberName = "Priya Sharma",
-              ProviderName = "Fortis Hospital",
-              Amount = 23000,
-              ServiceDate = new DateTime(2025, 2, 5),
-              Status = "Under Review",
-              CreatedAt = new DateTime(2025, 2, 5),
-              UpdatedAt = new DateTime(2025, 2, 5)
-          },
+        var claims = Enumerable.Range(0, 5000).Select(i =>
+        {
+            var fn = firstNames[rnd.Next(firstNames.Length)];
+            var ln = lastNames[rnd.Next(lastNames.Length)];
+            var provider = providers[rnd.Next(providers.Length)];
+            var daysOffset = i % 365;
 
-          new Claim
-          {
-              Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-              ClaimNumber = "CLM1003",
-              MemberName = "Arun Singh",
-              ProviderName = "AIIMS",
-              Amount = 5000,
-              ServiceDate = new DateTime(2025, 3, 1),
-              Status = "Approved",
-              CreatedAt = new DateTime(2025, 3, 1),
-              UpdatedAt = new DateTime(2025, 3, 1)
-          },
+            return new Claim
+            {
+                Id = Guid.NewGuid(),
+                ClaimNumber = $"CLM-{1001 + i}",
+                MemberName = $"{fn} {ln}",
+                ProviderName = provider,
+                Amount = rnd.Next(1000, 30001),
+                ServiceDate = baseDate.AddDays(daysOffset),
+                Status = statuses[i % statuses.Length],
+                CreatedAt = baseDate.AddDays(daysOffset),
+                UpdatedAt = baseDate.AddDays(daysOffset)
+            };
+        }).ToArray();
 
-          new Claim
-          {
-              Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-              ClaimNumber = "CLM1004",
-              MemberName = "Meena Patel",
-              ProviderName = "Max Healthcare",
-              Amount = 12000,
-              ServiceDate = new DateTime(2025, 2, 18),
-              Status = "Rejected",
-              CreatedAt = new DateTime(2025, 2, 18),
-              UpdatedAt = new DateTime(2025, 2, 18)
-          },
-
-          new Claim
-          {
-              Id = Guid.Parse("55555555-5555-5555-5555-555555555555"),
-              ClaimNumber = "CLM1005",
-              MemberName = "Suresh Reddy",
-              ProviderName = "Narayana Hospital",
-              Amount = 17500,
-              ServiceDate = new DateTime(2025, 3, 12),
-              Status = "Submitted",
-              CreatedAt = new DateTime(2025, 3, 12),
-              UpdatedAt = new DateTime(2025, 3, 12)
-          },
-
-          new Claim
-          {
-              Id = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-              ClaimNumber = "CLM1006",
-              MemberName = "Anita Verma",
-              ProviderName = "Care Hospital",
-              Amount = 8900,
-              ServiceDate = new DateTime(2025, 1, 28),
-              Status = "Approved",
-              CreatedAt = new DateTime(2025, 1, 28),
-              UpdatedAt = new DateTime(2025, 1, 28)
-          },
-
-          new Claim
-          {
-              Id = Guid.Parse("77777777-7777-7777-7777-777777777777"),
-              ClaimNumber = "CLM1007",
-              MemberName = "Rahul Nair",
-              ProviderName = "Manipal Hospital",
-              Amount = 21000,
-              ServiceDate = new DateTime(2025, 4, 3),
-              Status = "Under Review",
-              CreatedAt = new DateTime(2025, 4, 3),
-              UpdatedAt = new DateTime(2025, 4, 3)
-          },
-
-          new Claim
-          {
-              Id = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-              ClaimNumber = "CLM1008",
-              MemberName = "Kavita Joshi",
-              ProviderName = "Medanta Hospital",
-              Amount = 9500,
-              ServiceDate = new DateTime(2025, 3, 22),
-              Status = "Submitted",
-              CreatedAt = new DateTime(2025, 3, 22),
-              UpdatedAt = new DateTime(2025, 3, 22)
-          },
-
-          new Claim
-          {
-              Id = Guid.Parse("99999999-9999-9999-9999-999999999999"),
-              ClaimNumber = "CLM1009",
-              MemberName = "Deepak Gupta",
-              ProviderName = "Global Hospital",
-              Amount = 30000,
-              ServiceDate = new DateTime(2025, 4, 1),
-              Status = "Approved",
-              CreatedAt = new DateTime(2025, 4, 1),
-              UpdatedAt = new DateTime(2025, 4, 1)
-          },
-
-          new Claim
-          {
-              Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-              ClaimNumber = "CLM1010",
-              MemberName = "Lakshmi Narayan",
-              ProviderName = "Sunrise Hospital",
-              Amount = 14000,
-              ServiceDate = new DateTime(2025, 4, 10),
-              Status = "Under Review",
-              CreatedAt = new DateTime(2025, 4, 10),
-              UpdatedAt = new DateTime(2025, 4, 10)
-          }
-        );
+        modelBuilder.Entity<Claim>().HasData(claims);
     }
 }

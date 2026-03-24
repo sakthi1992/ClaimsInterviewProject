@@ -15,6 +15,9 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+builder.Services.AddScoped<ClaimsApi.Repositories.IClaimsRepository, ClaimsApi.Repositories.ClaimsRepository>();
+builder.Services.AddScoped<ClaimsApi.Services.IClaimsService, ClaimsApi.Services.ClaimsService>();
+
 
 
 builder.Services.AddControllers();
