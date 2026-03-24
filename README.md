@@ -29,7 +29,9 @@ SQLite
 
 -   Create new claims
 -   View claim details
--   List all claims
+-   List all claims (with server-side pagination)
+-   Search & Filter claims
+-   Sort claims by any column
 -   Delete claims
 
 Claim numbers are automatically generated in the format:
@@ -74,6 +76,17 @@ Base URL
 ## Get All Claims
 
 GET /api/claims
+
+## Get Paginated Claims
+
+GET /api/claims/paged?page=1&pageSize=20&searchTerm=abc&status=Approved&sortBy=claimNumber&sortDirection=asc
+
+-   **page**: Page number (default: 1)
+-   **pageSize**: Items per page (default: 20)
+-   **searchTerm**: Filter by Member Name, Provider Name, or Claim Number
+-   **status**: Filter by status (Draft, Submitted, Approved, etc.)
+-   **sortBy**: Column to sort by
+-   **sortDirection**: Sort order (asc/desc)
 
 ## Get Claim By Id
 
@@ -182,7 +195,6 @@ were simplified:
 -   Minimal UI styling
 -   No authentication/authorization
 -   Limited validation
--   No pagination
 -   Basic error handling
 
 ------------------------------------------------------------------------
@@ -190,11 +202,10 @@ were simplified:
 # Future Improvements
 
 -   Authentication & Authorization
--   Pagination for claims
--   Advanced filtering
 -   Role-based approvals
 -   Unit testing
 -   Better UI design
+-   Export to CSV/Excel
 
 ------------------------------------------------------------------------
 

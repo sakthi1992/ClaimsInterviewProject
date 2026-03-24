@@ -1,16 +1,39 @@
-# React + Vite
+# Claims Portal - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React-based frontend for the **Claims Management Portal**, built with **Vite, React, and Bootstrap**.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Claims List
+- **Server-side Pagination**: Efficiently handles large datasets by fetching only the required page.
+- **Dynamic Search**: Real-time searching by Member Name, Provider Name, or Claim Number.
+- **Status Filtering**: Filter claims by their current status (Draft, Submitted, Approved, etc.).
+- **Multi-column Sorting**: Clickable table headers to sort by Claim Number, Member, Provider, Amount, or Status.
+- **Configurable Page Size**: Choose between 5, 10, 20, or 50 items per page.
 
-## React Compiler
+### Claim Management
+- **Create Claim**: Simplified form to add new insurance claims.
+- **Claim Details**: View complete claim information and associated notes.
+- **Status Updates**: Update the status of a claim along with a note.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the ESLint configuration
+### Installation
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Running in Development
+```bash
+npm run dev
+```
+
+### Build for Production
+```bash
+npm run build
+```
+
+## Project Structure
+- `src/pages`: Main screen components (`ClaimsList`, `ClaimDetails`, `CreateClaim`).
+- `src/services/api.js`: Axios configuration for backend communication.
+- `src/App.jsx`: Main routing and layout.
